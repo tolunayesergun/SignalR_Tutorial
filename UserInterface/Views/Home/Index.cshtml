@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+@section Scripts{
+    <script src="~/microsoft-signalr/signalr.min.js"></script>
+    <script>
+            $(document).ready(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44347/notifyhub").build();
+            // connection.start().then(() => { connection.invoke })
+            connection.start()
+                .then(() => {
+                    connection.invoke("AddGroup", "6");
+                    console.log("OK");
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+            connection.on("notify", (data) => { console.log(data) });
+
+        });
+    </script>
+}
